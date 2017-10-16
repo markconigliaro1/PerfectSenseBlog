@@ -171,11 +171,11 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        PerfectSenseBlog\Providers\AppServiceProvider::class,
+        PerfectSenseBlog\Providers\AuthServiceProvider::class,
+        // PerfectSenseBlog\Providers\BroadcastServiceProvider::class,
+        PerfectSenseBlog\Providers\EventServiceProvider::class,
+        PerfectSenseBlog\Providers\RouteServiceProvider::class,
 
     ],
 
