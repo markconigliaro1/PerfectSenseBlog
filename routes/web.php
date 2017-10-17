@@ -12,4 +12,24 @@
 */
 
 // Static Routes.
-Route::get('/', 'StaticController@getHome')->name('home');
+Route::get('/', 'HomeController@getHome')->name('home');
+
+// Guest Routes.
+Route::get('/signup', 'Guest\GuestController@getSignUp')
+->middleware('guest')
+->name('guest.signup');
+
+Route::post('/signup', 'Guest\GuestController@postSignUp')
+->middleware('guest');
+
+Route::get('/signin', 'Guest\GuestController@getSignIn')
+->middleware('guest')
+->name('guest.signin');
+
+Route::post('/signin', 'Guest\GuestController@postSignIn')
+->middleware('guest');
+
+// Auth Routes.
+Route::get('/signout', 'Auth\AuthController@getSignOut')
+->middleware('auth')
+->name('auth.signout');

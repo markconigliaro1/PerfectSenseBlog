@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => PerfectSenseBlog\User::class,
+            'model' => PerfectSenseBlog\Models\User::class,
         ],
 
         // 'users' => [
