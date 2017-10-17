@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
  */
 class AuthController extends Controller
 {
-	
 	/**
 	 * Handles GET requests made to the signout route.
 	 */

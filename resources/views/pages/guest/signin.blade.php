@@ -4,7 +4,7 @@ Sign In
 @stop
 @section('content')
 <div class="page-header">
-	<h2>Sign In</h2>
+	<h1>Sign In</h1>
 </div>
 <div class="row">
 	<div class="col-lg-6">

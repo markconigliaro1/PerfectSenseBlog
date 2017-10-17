@@ -2,6 +2,7 @@
 
 namespace PerfectSenseBlog\Models;
 
+use DateTime;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -40,7 +41,6 @@ class User extends Model implements AuthenticatableContract
 	 */
 	public function getFullName()
 	{
-
 		// Users cannot sign up without their full name. The conditional is precautionary.
 		if ($this->first_name && $this->last_name) 
 		{
@@ -48,7 +48,32 @@ class User extends Model implements AuthenticatableContract
 		}
 
 		// For whatever reason the user does not have a full name, return the username.
-		return "{$this->username}";
+		return $this->username;
+	}
+
+	/**
+	 * Returns the location of the user if available.
+	 */
+	public function getLocation()
+	{
+		return ($this->location) ? $this->location : "Location Not Available.";
+	}
+
+	/**
+	 * Returns a normal formatted join date from the created_at attribute.
+	 */
+	public function getJoinDate()
+	{
+		$date = new DateTime($this->created_at);
+		return $date->format("F Y");
+	}
+
+	/**
+	 * Relational function to retrieve all of the user's posts.
+	 */
+	public function posts()
+	{
+		return $this->hasMany('PerfectSenseBlog\Models\Post', 'user_id');
 	}
 
 }

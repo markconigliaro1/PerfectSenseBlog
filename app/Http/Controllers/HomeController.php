@@ -2,6 +2,9 @@
 
 namespace PerfectSenseBlog\Http\Controllers;
 
+use Auth;
+use PerfectSenseBlog\Models\Post;
+
 /**
  * Controller to handle all requests to the home page.
  *
@@ -10,10 +13,18 @@ namespace PerfectSenseBlog\Http\Controllers;
  */
 class HomeController extends Controller
 {
-
-	// Handles GET requests made to the home route.
+	/**
+	 * Handles GET requests made to the home route.
+	 */ 
 	public function getHome()
 	{
+		// Return the timeline page instead of the default home page if the user is signed in.
+		if (Auth::check())
+		{
+			$posts = Post::latest()->get();
+			return view('pages.auth.timeline')->with('posts', $posts);
+		}
+
 		return view('pages.home');
 	}
 }

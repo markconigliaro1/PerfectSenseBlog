@@ -14,7 +14,7 @@
 		<!-- Navigation links and dropdowns -->
 		<div id="nav-collapse" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="{{ route('home') }}">Home</a></li>
+				<li><a href="{{ route('home') }}">{{ Auth::check() ? 'Timeline' : 'Home' }}</a></li>
 				<li><a href="#">About</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
@@ -25,8 +25,8 @@
 					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" 
 					aria-haspopup="true" aria-expanded="false">{{ Auth::user()->getFullName() }} <span class="caret"></span></a>
           			<ul class="dropdown-menu">
-            			<li><a href="#">Profile</a></li>
-            			<li><a href="#">Settings</a></li>
+            			<li><a href="{{ route('auth.profile.index', ['username' => Auth::user()->username]) }}">Profile</a></li>
+            			<li><a href="{{ route('auth.profile.settings', ['username' => Auth::user()->username]) }}">Settings</a></li>
             			<li class="divider" role="separator"></li>
             			<li><a href="{{ route('auth.signout') }}">Sign Out</a></li>
           			</ul>
