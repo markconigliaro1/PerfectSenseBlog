@@ -2,7 +2,6 @@
 
 namespace PerfectSenseBlog\Models;
 
-use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,18 +20,28 @@ class Post extends Model
 		'body'
 	];
 
-	public function getPostTime()
-	{
-		$timestamp = new DateTime($this->created_at);
-		return $timestamp->format("F j, Y \a\\t g:i A");
-	}
-
 	/**
 	 * Relational function to retrieve the user table entry for this post.
 	 */
 	public function user()
 	{
 		return $this->belongsTo('PerfectSenseBlog\Models\User', 'user_id');
+	}
+
+	/**
+	 * Relational function to retrieve the comments for this post.
+	 */
+	public function comments()
+	{
+		return $this->hasMany('PerfectSenseBlog\Models\Post', 'parent_id');
+	}
+
+	/**
+	 * Retrieves all posts that are the highest parent.
+	 */
+	public function scopeNotComment($query)
+	{
+		return $query->whereNull('parent_id');
 	}
 
 }

@@ -2,7 +2,6 @@
 
 namespace PerfectSenseBlog\Models;
 
-use DateTime;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -57,15 +56,6 @@ class User extends Model implements AuthenticatableContract
 	public function getLocation()
 	{
 		return ($this->location) ? $this->location : "Location Not Available.";
-	}
-
-	/**
-	 * Returns a normal formatted join date from the created_at attribute.
-	 */
-	public function getJoinDate()
-	{
-		$date = new DateTime($this->created_at);
-		return $date->format("F Y");
 	}
 
 	/**

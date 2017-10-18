@@ -22,11 +22,16 @@ class ProfileController extends Controller
 	 */
 	public function getProfile($username)
 	{	
+		// Check for a valid user.
 		$user = User::where('username', $username)->first();
-
 		if (!$user) { abort(404); }
+
+		// Retrieve all of the user's posts.
+		$posts = $user->posts()->notComment()->latest()->paginate(20);
 			
-		return view('pages.auth.profile.index')->with('user', $user);
+		return view('pages.auth.profile.index')
+		->with('user', $user)
+		->with('posts', $posts);
 	}
 
 	/**

@@ -85,7 +85,6 @@ class GuestController extends Controller
 		}
 
 		// Redirect the user back to the home page signed in.
-		return redirect()->route('auth.profile.index', ['username' => Auth::user()->username])
-		->with('success', 'You have been successfully signed in.');
+		return redirect()->route('home')->with('success', 'You have been successfully signed in.');
 	}
 }

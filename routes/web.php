@@ -50,3 +50,7 @@ Route::post('/user/{username}/settings', 'Auth\ProfileController@postProfileSett
 Route::post('/post', 'Auth\PostController@postPost')
 ->middleware('auth')
 ->name('auth.post.post');
+
+Route::post('/post/{postID}/comment', 'Auth\PostController@postComment')
+->middleware('auth')
+->name('auth.comment.post');

@@ -21,7 +21,7 @@ class HomeController extends Controller
 		// Return the timeline page instead of the default home page if the user is signed in.
 		if (Auth::check())
 		{
-			$posts = Post::latest()->get();
+			$posts = Post::notComment()->latest()->paginate(20);
 			return view('pages.auth.timeline')->with('posts', $posts);
 		}
 
