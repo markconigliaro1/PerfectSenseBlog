@@ -14,9 +14,9 @@
 		<!-- Navigation links and dropdowns -->
 		<div id="nav-collapse" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="{{ route('home') }}">{{ Auth::check() ? 'Timeline' : 'Home' }}</a></li>
-				<li><a href="#">About</a></li>
-				<li><a href="#">Contact</a></li>
+				@auth
+				<li><a href="{{ route('home') }}">Home</a></li>
+				@endauth
 			</ul>
 			<ul class="nav navbar-right navbar-nav">
 				<!-- Authenticated only elements -->

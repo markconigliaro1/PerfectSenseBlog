@@ -26,6 +26,6 @@ class HomeController extends Controller
 			return view('pages.auth.timeline')->with('posts', $posts)->with('user', $user);
 		}
 
-		return view('pages.home');
+		return redirect()->route('guest.signup');
 	}
 }
