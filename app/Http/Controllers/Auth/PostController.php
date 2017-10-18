@@ -63,4 +63,28 @@ class PostController extends Controller
 		return redirect()->back();
 	}
 
+	/**
+	 * Handles GET requests made when liking likeables.
+	 *
+	 * @param postID 	The post ID to like to.
+	 */
+	public function getLike($postID)
+	{
+		// Check for valid post.
+		$post = Post::find($postID);
+		if (!$post) { return redirect()->route('home'); }
+
+		// Check if post is already liked.
+		if (Auth::user()->hasLikedPost($post))
+		{
+			return redirect()->back();
+		}
+
+		// Associate like with the post and user.
+		$like = $post->likes()->create([]);
+		Auth::user()->likes()->save($like);
+
+		return redirect()->back();
+	}
+
 }

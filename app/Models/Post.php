@@ -37,6 +37,14 @@ class Post extends Model
 	}
 
 	/**
+	 * Polymorphic relational function to retrieve the likes for this post.
+	 */
+	public function likes()
+	{
+		return $this->morphMany('PerfectSenseBlog\Models\Likeable', 'likeable');
+	}
+
+	/**
 	 * Retrieves all posts that are the highest parent.
 	 */
 	public function scopeNotComment($query)

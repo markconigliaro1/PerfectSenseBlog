@@ -54,3 +54,7 @@ Route::post('/post', 'Auth\PostController@postPost')
 Route::post('/post/{postID}/comment', 'Auth\PostController@postComment')
 ->middleware('auth')
 ->name('auth.comment.post');
+
+Route::get('/post/{postID}/like', 'Auth\PostController@getLike')
+->middleware('auth')
+->name('auth.post.like');

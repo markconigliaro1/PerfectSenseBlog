@@ -22,7 +22,8 @@ class HomeController extends Controller
 		if (Auth::check())
 		{
 			$posts = Post::notComment()->latest()->paginate(20);
-			return view('pages.auth.timeline')->with('posts', $posts);
+			$user = Auth::user();
+			return view('pages.auth.timeline')->with('posts', $posts)->with('user', $user);
 		}
 
 		return view('pages.home');

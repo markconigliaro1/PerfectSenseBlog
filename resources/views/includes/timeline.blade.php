@@ -1,5 +1,6 @@
 <div class="row">
 	<div class="col-lg-8">
+		@if (Auth::user()->id == $user->id)
 		<div class="row">
 			<div class="col-lg-12">
 				<form role="form" method="POST" action="{{ route('auth.post.post') }}">
@@ -20,6 +21,7 @@
 				</form>
 			</div>
 		</div><hr>
+		@endif
 		<div class="row">
 			<div class="col-lg-12">
 				@if (!$posts->count())
@@ -27,7 +29,7 @@
 				@else
 				@foreach($posts as $post)
 				<div class="media">
-					<a class="pull-left" 
+					<a class="media-left" 
 					href="{{ route('auth.profile.index', ['username' => $post->user->username]) }}">
 						<img class="media-object" style="width:60px; height:60px;" src="">
 					</a>
@@ -39,8 +41,8 @@
 							<em>Posted: {{ $post->created_at->diffForHumans() }}</em></p>
 						<p>{{ $post->body }}</p>
 						<ul class="list-inline">
-							<li><a href="#">Like</a></li>•
-							<li><a href="#">Dislike</a></li>•
+							<li><a href="{{ route('auth.post.like', ['postID' => $post->id]) }}">
+								Like ({{ $post->likes()->count() }})</a></li>•
 							<li><a role="button" onclick="toggleCommentForm({{$post->id}})">Reply</a></li>
 							@auth
 							•<li><a href="#">Delete</a></li>
@@ -66,7 +68,7 @@
 						</form>
 						@foreach($post->comments as $comment)
 						<div class="media">
-							<a class="pull-left" href="{{ route('auth.profile.index', ['username' => $comment->user->username]) }}">
+							<a class="media-left" href="{{ route('auth.profile.index', ['username' => $comment->user->username]) }}">
 								<img class="media-object" style="width:40px; height:40px;" src="">
 							</a>
 							<div class="media-body">
@@ -75,8 +77,7 @@
 									<em>Posted: {{ $comment->created_at->diffForHumans() }}</em></p>
 								<p>{{ $comment->body }}</p>
 								<ul class="list-inline">
-									<li><a href="#">Like</a></li>•
-									<li><a href="#">Dislike</a></li>
+									<li><a href="{{ route('auth.post.like', ['postID' => $comment->id]) }}">Like ({{ $comment->likes()->count() }})</a></li>
 									@auth
 									•<li><a href="#">Delete</a></li>
 									@endauth

@@ -2,6 +2,8 @@
 
 namespace PerfectSenseBlog\Models;
 
+use PerfectSenseBlog\Models\Post;
+
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -59,11 +61,31 @@ class User extends Model implements AuthenticatableContract
 	}
 
 	/**
+	 * Checks if this user's post has any likes.
+	 */
+	public function hasLikedPost(Post $post)
+	{
+		return $post->likes
+		->where('likeable_id', $post->id)
+		->where('likeable_type', get_class($post))
+		->where('user_id', $this->id)
+		->count();
+	}
+
+	/**
 	 * Relational function to retrieve all of the user's posts.
 	 */
 	public function posts()
 	{
 		return $this->hasMany('PerfectSenseBlog\Models\Post', 'user_id');
+	}
+
+	/**
+	 * Relational function to retrieve all of the user's likes.
+	 */
+	public function likes()
+	{
+		return $this->hasMany('PerfectSenseBlog\Models\Likeable', 'user_id');
 	}
 
 }
