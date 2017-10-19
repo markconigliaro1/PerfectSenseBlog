@@ -4,6 +4,7 @@ namespace PerfectSenseBlog\Http\Controllers\Auth;
 
 use PerfectSenseBlog\Http\Controllers\Controller;
 use PerfectSenseBlog\Models\Post;
+use PerfectSenseBlog\Models\Likeable;
 
 use Auth;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class PostController extends Controller
 			'body' => $request->input('post')
 		]);
 
-		return redirect()->route('home')->with('info', 'Post was successful');
+		return redirect()->back()->with('info', 'Post was successful.');
 	}
 
 	/**
@@ -85,6 +86,55 @@ class PostController extends Controller
 		Auth::user()->likes()->save($like);
 
 		return redirect()->back();
+	}
+
+	/**
+	 * Handles GET requests made when liking likeables.
+	 *
+	 * @param postID 	The post ID to like to.
+	 */
+	public function getUnlike($postID)
+	{
+		// Check for valid post.
+		$post = Post::find($postID);
+		if (!$post) { return redirect()->route('home'); }
+
+		// Check if post isn't already liked.
+		if (!Auth::user()->hasLikedPost($post))
+		{
+			return redirect()->back();
+		}
+
+		// Unlike the post.
+		$like = Likeable::where('user_id', Auth::user()->id)
+		->where('likeable_id', $postID)
+		->delete();
+
+		return redirect()->back();
+	}
+
+	/**
+	 * Handles GET requests made when liking likeables.
+	 *
+	 * @param postID 	The post ID to like to.
+	 */
+	public function getDelete($postID)
+	{
+		// Check for valid post.
+		$post = Post::find($postID);
+		if (!$post) { return redirect()->route('home'); }
+
+		// Verify the post can be deleted by this user.
+		if (Auth::user()->id != $post->user->id)
+		{
+			return redirect()->back();
+		}
+
+		// Delete the post and associated comments.
+		$post->delete();
+		Post::where('parent_id', $post->id)->delete();
+
+		return redirect()->back()->with('info', 'Post was successfully deleted.');
 	}
 
 }

@@ -58,3 +58,11 @@ Route::post('/post/{postID}/comment', 'Auth\PostController@postComment')
 Route::get('/post/{postID}/like', 'Auth\PostController@getLike')
 ->middleware('auth')
 ->name('auth.post.like');
+
+Route::get('/post/{postID}/unlike', 'Auth\PostController@getUnlike')
+->middleware('auth')
+->name('auth.post.unlike');
+
+Route::get('/post/{postID}/delete', 'Auth\PostController@getDelete')
+->middleware('auth')
+->name('auth.post.delete');

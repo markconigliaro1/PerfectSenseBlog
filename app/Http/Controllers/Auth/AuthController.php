@@ -25,7 +25,7 @@ class AuthController extends Controller
 		Auth::logout();
 
 		// Redirect the user back to the home page.
-		return redirect()->route('home')->with('success', 'You have been successfully signed out');
+		return redirect()->route('home')->with('info', 'You have been successfully signed out.');
 	}
 
 }

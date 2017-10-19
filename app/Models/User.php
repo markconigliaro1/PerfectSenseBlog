@@ -3,6 +3,7 @@
 namespace PerfectSenseBlog\Models;
 
 use PerfectSenseBlog\Models\Post;
+use PerfectSenseBlog\Models\Permission;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -70,6 +71,30 @@ class User extends Model implements AuthenticatableContract
 		->where('likeable_type', get_class($post))
 		->where('user_id', $this->id)
 		->count();
+	}
+
+	/**
+	 * Relational function to retrieve all of the user's permissions.
+	 */
+	public function permission()
+	{
+		return $this->hasOne('PerfectSenseBlog\Models\Permission', 'user_id');
+	}
+
+	/**
+	 * Checks if the user is permitted to post on the site.
+	 */
+	public function canPost()
+	{
+		return $this->permission->can_post;
+	}
+
+	/**
+	 * Checks if the user is permitted to comment on the site.
+	 */
+	public function canComment()
+	{
+		return $this->permission->can_comment;
 	}
 
 	/**

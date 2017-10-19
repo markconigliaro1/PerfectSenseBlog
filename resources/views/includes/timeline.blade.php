@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-lg-8">
-		@if (Auth::user()->id == $user->id)
+		@if (Auth::check() AND Auth::user()->canPost())
 		<div class="row">
 			<div class="col-lg-12">
 				<form role="form" method="POST" action="{{ route('auth.post.post') }}">
@@ -25,7 +25,7 @@
 		<div class="row">
 			<div class="col-lg-12">
 				@if (!$posts->count())
-				<p>Your timeline seems pretty boring right now...</p>
+				<p>There are no posts.</p>
 				@else
 				@foreach($posts as $post)
 				<div class="media">
@@ -41,13 +41,17 @@
 							<em>Posted: {{ $post->created_at->diffForHumans() }}</em></p>
 						<p>{{ $post->body }}</p>
 						<ul class="list-inline">
-							<li><a href="{{ route('auth.post.like', ['postID' => $post->id]) }}">
-								Like ({{ $post->likes()->count() }})</a></li>•
+							@if (Auth::check() AND Auth::user()->canComment())
 							<li><a role="button" onclick="toggleCommentForm({{$post->id}})">Reply</a></li>
-							@auth
-							•<li><a href="#">Delete</a></li>
-							@endauth
+							@if (!Auth::user()->hasLikedPost($post))
+							<li><a href="{{ route('auth.post.like', ['postID' => $post->id]) }}">Like ({{ $post->likes()->count() }})</a></li>
+							@else
+							<li><a href="{{ route('auth.post.unlike', ['postID' => $post->id]) }}">Unlike ({{ $post->likes()->count() }})</a></li>
+							@endif
+							•<li><a href="{{ route('auth.post.delete', ['postID' => $post->id]) }}">Delete</a></li>
+							@endif
 						</ul><hr>
+						@auth
 						<form id="comment-form-{{ $post->id }}" 
 							style="{{ $errors->has("comment-{$post->id}") ? '' : 'display:none;' }}" 
 							role="form" method="POST" action="{{ route('auth.comment.post', ['postID' => $post->id]) }}">
@@ -60,12 +64,18 @@
 								</div>
 							</div>
 							<div class="row">
+								<div class="col-lg-12">
+									<p>Commenting as {{ Auth::user()->getFullName() }}</p>
+								</div>
+							</div>
+							<div class="row">
 								<div class="col-md-3 form-group">
 									<button class="btn btn-primary btn-block" type="submit">Comment</button>
 								</div>
 							</div>
 							<input type="hidden" name="_token" value="{{ Session::token() }}"/><hr>
 						</form>
+						@endauth
 						@foreach($post->comments as $comment)
 						<div class="media">
 							<a class="media-left" href="{{ route('auth.profile.index', ['username' => $comment->user->username]) }}">
@@ -77,9 +87,13 @@
 									<em>Posted: {{ $comment->created_at->diffForHumans() }}</em></p>
 								<p>{{ $comment->body }}</p>
 								<ul class="list-inline">
-									<li><a href="{{ route('auth.post.like', ['postID' => $comment->id]) }}">Like ({{ $comment->likes()->count() }})</a></li>
 									@auth
-									•<li><a href="#">Delete</a></li>
+									@if (!Auth::user()->hasLikedPost($comment))
+									<li><a href="{{ route('auth.post.like', ['postID' => $comment->id]) }}">Like ({{ $comment->likes()->count() }})</a></li>
+									@else
+									<li><a href="{{ route('auth.post.unlike', ['postID' => $comment->id]) }}">Unlike ({{ $comment->likes()->count() }})</a></li>
+									@endif
+									•<li><a href="{{ route('auth.post.delete', ['postID' => $comment->id]) }}">Delete</a></li>
 									@endauth
 								</ul><hr>
 							</div>

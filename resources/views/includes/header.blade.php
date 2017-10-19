@@ -14,9 +14,7 @@
 		<!-- Navigation links and dropdowns -->
 		<div id="nav-collapse" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				@auth
 				<li><a href="{{ route('home') }}">Home</a></li>
-				@endauth
 			</ul>
 			<ul class="nav navbar-right navbar-nav">
 				<!-- Authenticated only elements -->

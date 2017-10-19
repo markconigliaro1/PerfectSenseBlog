@@ -18,14 +18,8 @@ class HomeController extends Controller
 	 */ 
 	public function getHome()
 	{
-		// Return the timeline page instead of the default home page if the user is signed in.
-		if (Auth::check())
-		{
-			$posts = Post::notComment()->latest()->paginate(20);
-			$user = Auth::user();
-			return view('pages.auth.timeline')->with('posts', $posts)->with('user', $user);
-		}
+		$posts = Post::notComment()->latest()->paginate(20);
 
-		return redirect()->route('guest.signup');
+		return view('pages.home')->with('posts', $posts);
 	}
 }

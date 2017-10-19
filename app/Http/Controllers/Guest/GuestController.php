@@ -4,6 +4,7 @@ namespace PerfectSenseBlog\Http\Controllers\Guest;
 
 use PerfectSenseBlog\Http\Controllers\Controller;
 use PerfectSenseBlog\Models\User;
+use PerfectSenseBlog\Models\Permission;
 
 use Auth;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class GuestController extends Controller
 		]);
 
 		// Create the account.
-		User::create([
+		$user = User::create([
 			'first_name' => $request->input('first_name'),
 			'last_name' => $request->input('last_name'),
 			'username' => $request->input('username'),
@@ -52,8 +53,15 @@ class GuestController extends Controller
 			'password' => bcrypt($request->input('password'))
 		]);
 
+		// Create the default user permissions and associate with the user.
+		$permission = Permission::create([
+			'can_post' => false,
+			'can_comment' => true
+		])->user()->associate($user);
+		$user->permission()->save($permission);
+
 		// Redirect home with confirmation.
-		return redirect()->route('home')->with('success', 'Your account has been successfully created!');
+		return redirect()->route('home')->with('info', 'Your account has been successfully created!');
 	}
 
 	/**
@@ -85,6 +93,6 @@ class GuestController extends Controller
 		}
 
 		// Redirect the user back to the home page signed in.
-		return redirect()->route('home')->with('success', 'You have been successfully signed in.');
+		return redirect()->route('home')->with('info', 'You have been successfully signed in.');
 	}
 }
