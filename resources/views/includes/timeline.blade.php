@@ -42,7 +42,7 @@
 						<p>{{ $post->body }}</p>
 						<ul class="list-inline">
 							@if (Auth::check() AND Auth::user()->canComment())
-							<li><a role="button" onclick="toggleCommentForm({{$post->id}})">Reply</a></li>
+							<li><a role="button" onclick="toggleCommentForm({{$post->id}})">Reply</a></li>•
 							@if (!Auth::user()->hasLikedPost($post))
 							<li><a href="{{ route('auth.post.like', ['postID' => $post->id]) }}">Like ({{ $post->likes()->count() }})</a></li>
 							@else
