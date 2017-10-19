@@ -17,6 +17,7 @@ class Post extends Model
 
 	// The fillable columns within the database.
 	protected $fillable = [
+		'title',
 		'body'
 	];
 

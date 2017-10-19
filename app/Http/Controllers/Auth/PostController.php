@@ -26,11 +26,13 @@ class PostController extends Controller
 	{
 		// Validate request object parameters.
 		$this->validate($request, [
-			'post' => 'required'
+			'title' => 'required|max:100',
+			'body' => 'required'
 		]);
 
 		Auth::user()->posts()->create([
-			'body' => $request->input('post')
+			'title' => $request->input('title'),
+			'body' => $request->input('body')
 		]);
 
 		return redirect()->back()->with('info', 'Post was successful.');

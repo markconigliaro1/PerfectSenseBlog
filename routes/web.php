@@ -35,10 +35,6 @@ Route::get('/signout', 'Auth\AuthController@getSignOut')
 ->middleware('auth')
 ->name('auth.signout');
 
-Route::get('/user/{username}', 'Auth\ProfileController@getProfile')
-->middleware('auth')
-->name('auth.profile.index');
-
 Route::get('/user/{username}/settings', 'Auth\ProfileController@getProfileSettings')
 ->middleware('auth')
 ->name('auth.profile.settings');
