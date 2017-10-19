@@ -41,12 +41,13 @@
 							<em>Posted: {{ $post->created_at->diffForHumans() }}</em></p>
 						<p>{{ $post->body }}</p>
 						<ul class="list-inline">
+							<li>Likes ({{ $post->likes->count() }})</li>
 							@if (Auth::check() AND Auth::user()->canComment())
 							<li><a role="button" onclick="toggleCommentForm({{$post->id}})">Reply</a></li>•
 							@if (!Auth::user()->hasLikedPost($post))
-							<li><a href="{{ route('auth.post.like', ['postID' => $post->id]) }}">Like ({{ $post->likes()->count() }})</a></li>
+							<li><a href="{{ route('auth.post.like', ['postID' => $post->id]) }}">Like</a></li>
 							@else
-							<li><a href="{{ route('auth.post.unlike', ['postID' => $post->id]) }}">Unlike ({{ $post->likes()->count() }})</a></li>
+							<li><a href="{{ route('auth.post.unlike', ['postID' => $post->id]) }}">Unlike</a></li>
 							@endif
 							•<li><a href="{{ route('auth.post.delete', ['postID' => $post->id]) }}">Delete</a></li>
 							@endif
@@ -87,11 +88,12 @@
 									<em>Posted: {{ $comment->created_at->diffForHumans() }}</em></p>
 								<p>{{ $comment->body }}</p>
 								<ul class="list-inline">
+									<li>Likes ({{ $comment->likes->count() }})</li>
 									@auth
 									@if (!Auth::user()->hasLikedPost($comment))
-									<li><a href="{{ route('auth.post.like', ['postID' => $comment->id]) }}">Like ({{ $comment->likes()->count() }})</a></li>
+									<li><a href="{{ route('auth.post.like', ['postID' => $comment->id]) }}">Like</a></li>
 									@else
-									<li><a href="{{ route('auth.post.unlike', ['postID' => $comment->id]) }}">Unlike ({{ $comment->likes()->count() }})</a></li>
+									<li><a href="{{ route('auth.post.unlike', ['postID' => $comment->id]) }}">Unlike</a></li>
 									@endif
 									•<li><a href="{{ route('auth.post.delete', ['postID' => $comment->id]) }}">Delete</a></li>
 									@endauth
